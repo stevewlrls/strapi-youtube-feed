@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "youtube_videos",
+  "info": {
+    "singularName": "youtube-video",
+    "pluralName": "youtube-videos",
+    "displayName": "Youtube Video"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "mediaId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "text"
+    },
+    "published": {
+      "type": "string"
+    },
+    "preview": {
+      "type": "string"
+    },
+    "previewSize": {
+      "type": "string"
+    },
+    "permalink": {
+      "type": "string"
+    }
+  }
+}
