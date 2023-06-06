@@ -5,8 +5,8 @@ import pluginId from '../../pluginId';
 
 const Settings = () => {
   const [settings, updateSettings] = useState({
-    appId: '',
-    appKey: '',
+    channelName: '',
+    channelId: '',
   });
   const [isSaving, setSaving] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -28,22 +28,6 @@ const Settings = () => {
       ></HeaderLayout>
       <ContentLayout>
         <Grid gap={4} gridCols={2}>
-          <GridItem>
-            <TextInput
-              label="App ID"
-              name="app-id"
-              value={settings.appId}
-              onChange={(e) => updateSettings({...settings, appId: e.target.value})}
-            />
-          </GridItem>
-          <GridItem>
-            <TextInput
-              label="App key"
-              name="app-key"
-              value={settings.appKey}
-              onChange={(e) => updateSettings({...settings, appKey: e.target.value})}
-            />
-          </GridItem>
           <GridItem>
             <TextInput
               label="Channel name"
@@ -81,7 +65,7 @@ const Settings = () => {
     post(`/${pluginId}/settings`, data)
     .then(rsp => {
       setNotice({
-        type: rsp.data.ok ? 'success' : 'error',
+        type: rsp.data.ok ? 'success' : 'warning',
         message: rsp.data.ok ? 'Saved.' : rsp.data.error
       });
       setSaving(false);

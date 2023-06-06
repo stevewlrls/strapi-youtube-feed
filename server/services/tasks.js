@@ -16,7 +16,7 @@ function getPluginStore() {
 
 //---------------------------------------------------------------------------
 // getSettings
-//    Returns the Facebook 'app' settings, with an empty default if not yet
+//    Returns the YouTube 'app' settings, with an empty default if not yet
 // set.
 //---------------------------------------------------------------------------
 
@@ -25,12 +25,13 @@ async function getSettings() {
   let settings = await store.get({key: 'settings'});
   if (! settings)
     settings = {
-      appId:       '',
-      appKey:      '',
       channelName: '',
       channelId:   '',
       referer:     '',
     };
+  const config = strapi.config.get('plugin.youtube-feed');
+  settings.appId = config.appName;
+  settings.appKey = config.appKey;
   return settings;
 }
 
@@ -43,7 +44,7 @@ async function saveSettings(settings) {
   try {
     // Sanitize fields.
     for (const key in settings) {
-      if (! ['appId', 'appKey', 'channelName', 'channelId', 'referer'].includes(key))
+      if (! ['channelName', 'channelId', 'referer'].includes(key))
         delete settings[key];
     }
     // Then write to the database.
@@ -67,10 +68,12 @@ async function fetchPosts() {
   // First get the app key. If we don't have one yet, return an error.
   const store = getPluginStore();
   const settings = await store.get({key: 'settings'});
-  if (! settings.appKey || ! settings.channelId)
+  const app = strapi.config.get('plugin.youtube-feed');
+
+  if (! app.appKey || ! settings.channelId)
     return { error: 'Not set up' };
 
-  let fetched = await getYoutubePosts(settings);
+  let fetched = await getYoutubePosts(app, settings);
 
   return { fetched }
 }
@@ -82,7 +85,7 @@ async function fetchPosts() {
 // that FB returns posts with the default sort order of newest first).
 //---------------------------------------------------------------------------
 
-async function getYoutubePosts(settings) {
+async function getYoutubePosts(app, settings) {
   // Fetch a list of all posts we've added so far: just the post ID will
   // do. We'll use this to avoid creating a new entry for these, and to
   // stop fetching.
@@ -99,7 +102,7 @@ async function getYoutubePosts(settings) {
 
   let next = `https://www.googleapis.com/youtube/v3/search` +
     `?part=snippet` +
-    `&key=${settings.appKey}` +
+    `&key=${app.appKey}` +
     `&channelId=${settings.channelId}` +
     `&order=date`;
 

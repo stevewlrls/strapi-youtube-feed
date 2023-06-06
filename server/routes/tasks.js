@@ -26,12 +26,12 @@ module.exports = {
       }
     },
     {
-      method: 'POST',
+      method: 'GET',
       path: '/fetch-posts',
       handler: 'tasks.fetchPosts',
       config: {
         policies: [],
-        // auth: false
+        auth: false // Must be false, to allow cloud platform to invoke
       }
     },
   ],

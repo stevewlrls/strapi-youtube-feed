@@ -75,8 +75,8 @@ const HomePage = () => {
 
   function fetchPosts(ev) {
     setFetching(true);
-    const { post } = getFetchClient();
-    post(`/${pluginId}/fetch-posts`)
+    const { get } = getFetchClient();
+    get(`/${pluginId}/fetch-posts`)
       .then(rsp => {
         setFetching(false);
         setNotice({
