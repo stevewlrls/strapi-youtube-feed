@@ -51,7 +51,7 @@ async function saveSettings(settings) {
     const store = getPluginStore();
     await store.set({key: 'settings', value: settings});
     // Return the sanitized data.
-    return settings;
+    return {ok: true, ...settings};
   }
   catch (err) {
     return {error: err.message};
