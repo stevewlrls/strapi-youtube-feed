@@ -116,7 +116,7 @@ async function getYoutubePosts(app, settings) {
   }
 
   // Fetch and process each page of results.
-  while (next) {
+  while (next && fetched < 50) {
     const response = await fetch(next + pageToken, options)
       .then(rsp => rsp.json());
     if (response.error) {
